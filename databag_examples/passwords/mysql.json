@@ -1,0 +1,28 @@
+{
+  "id": "mysql",
+  "users": {
+    "replication_user": {
+      "password": "some_password",
+      "grants": {
+        "db": "*",
+        "actions": "SELECT, REPLICATION SLAVE, REPLICATION CLIENT"
+      }
+    },
+    "root": {
+      "password": "root_password",
+      "grants": {
+        "db": "*",
+        "actions": "ALL PRIVILEGES"
+      },
+      "sources": [ "localhost" ]
+    },
+    "master": {
+      "password": "some master password",
+      "grants": {
+        "db": "*",
+        "actions": "SELECT, SUPER, RELOAD"
+      },
+      "sources": [ '192.168.%']
+    }
+  }
+}

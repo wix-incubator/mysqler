@@ -1,0 +1,110 @@
+[client]
+socket            = <%= node['mysqler']["socket"] %>
+port              = <%= node['mysqler']["port"] %>
+[mysqld_safe]
+socket            = <%= node['mysqler']["socket"] %>
+nice              = <%= node['mysqler']["nice"] %>
+open-files-limit  = <%= node['mysqler']["open_files_limit"] %>
+
+# *** Application-specific options follow here ***
+#
+# The MySQL server
+#
+[mysqld]
+
+#
+# * Basic Settings
+#
+user                      = <%= node['mysqler'][:username] %>
+pid-file                  = <%= node['mysqler']["pidfile"] %>
+socket                    = <%= node['mysqler']["socket"] %>
+port                      = <%= node['mysqler']["port"] %>
+basedir                   = <%= node['mysqler']['basedir'] %>
+datadir                   = <%= node['mysqler']["datadir"] %>
+tmpdir                    = <%= node['mysqler']["tmpdir"] %>
+innodb_log_group_home_dir = <%= node['mysqler']["journaldir"] %>
+
+bind-address  = <%= node['mysqler']["bind_address"] %>
+report-host   = <%= node['mysqler']["hostname"] %>
+
+innodb_buffer_pool_size = <%= node['mysqler']["innodb_buffer_pool_size"] %>
+
+log_error             =<%= node['mysqler']["log_error"]  %>
+slow_query_log        =<%= node['mysqler']["slow_query_log"]  %>
+slow_query_log_file   =<%= node['mysqler']["slow_query_log_file"]  %>
+
+
+<% if node['mysqler']["server_id"].to_s != ''  %>
+
+########################################################
+######################  Replication  ###################
+########################################################
+server-id =<%= node['mysqler']["server_id"]  %>
+log_bin          =<%= node['mysqler']["log_bin"] %>
+log_bin_index    =<%= node['mysqler']["log_bin_index"] %>
+expire_logs_days =<%= node['mysqler']["expire_logs_days"]  %>
+max_binlog_size  =<%= node['mysqler']["max_binlog_size"]  %>
+binlog_cache_size =<%= node['mysqler']["binlog_cache_size"] %>
+
+relay_log       =<%= node['mysqler']["relay_log"] %>
+relay_log_index =<%= node['mysqler']["relay_log_index"] %>
+relay_log_info_file =<%= node['mysqler']["relay_log_info_file"] %>
+
+
+log_slave_updates=<%= node['mysqler']["log_slave_updates"]  %>
+binlog_format=<%= node['mysqler']["binlog_format"]  %>
+
+<%   node['mysqler']['replication_params'].each do |param, value| %>
+<%     if !value.respond_to? (:each) %>
+<%       if value %>
+<%= param %> = <%= value %>
+<%       end %>
+<%     elsif value.is_a? Array -%>
+<%       value.each do |item| -%>
+<%= param %> = <%= item %>
+<%       end -%>
+<%     else %>
+<%       Chef::Log.warning("Wrong configuration of parameter #{param} value #{value}") %>
+<%     end %>
+<%   end  %>
+<% end  %>
+
+########################################################
+#####################   Tunables   ####################
+########################################################
+<% node['mysqler'][:tunable].each do |param, value| -%>
+<%   if !value.respond_to?(:each) %>
+<%= param %> = <%= value %> 
+<%   elsif value.is_a? Array -%>
+<%     value.each do |item| -%>
+<%= param %> = <%= item %>
+<%     end -%>
+<%   elsif value.is_a? Hash -%>
+
+############## <%= param.capitalize %> 
+<%      value.each do |item,val| -%>
+<%= item %> = <%= val %>
+<%      end -%>
+
+<%   end %>
+<% end -%>
+########################################################
+
+
+[mysqldump]
+quick
+quote-names
+max_allowed_packet = <%= node['mysqler'][:tunable]["max_allowed_packet"] %>
+net_buffer_length  = <%= node['mysqler'][:tunable]["net_buffer_length"] %>
+
+[mysql]
+<% if node['mysqler']["client"]["no_auto_rehash"] %>
+no-auto-rehash # faster start of mysql but no tab completition
+<% end %>
+prompt = <%= node['mysqler']["client"]["prompt"] %>
+
+
+
+<% if !node["mysqler"]["includedir"].empty? %>
+!includedir  <%= node["mysqler"]["includedir"] %>
+<% end %>

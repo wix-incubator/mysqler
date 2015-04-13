@@ -1,0 +1,19 @@
+{
+  "id": "interconnect",
+  "users": [
+    {
+      "id": "master_user",
+      "shell": "/bin/bash",
+      "comment": "User to backup MySQL data between hosts",
+      "groups": [
+        "mysql"
+      ],
+      "action": "create",
+      "ssh_keys": [
+        "ssh-rsa public_key goes here master_user"
+      ],
+      "ssh_public_key": "ssh-rsa public_key goes here master_user",
+      "ssh_private_key": "-----BEGIN RSA PRIVATE KEY-----\nprivate_key goes here\n-----END RSA PRIVATE KEY-----\n"
+    }
+  ]
+}
