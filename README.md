@@ -31,7 +31,9 @@ Production tested on chef 11.16.4 version.
 We **DO** overwrite several attributes of percona cookbook
 
  `default["percona"]["skip_passwords"] = true`
+ 
  `default["percona"]["apt_keyserver"] = "keyserver.ubuntu.com"`
+ 
  `default["percona"]["backup"]["configure"] = false`
 
 ## Usage
