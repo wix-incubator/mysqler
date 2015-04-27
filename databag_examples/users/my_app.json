@@ -1,7 +1,7 @@
 {
   "id": "my_app",
   "users": {
-    "mobile_app": {
+    "mobile_app": [{
       "db_name": "mobile_db",
       "table_names": [
         "TABLE_A", "TABLE_B"
@@ -10,7 +10,7 @@
         "ro": "SELECT",
         "rw": "SELECT, INSERT, UPDATE"
       }
-    },
+    }],
     "webapp": {
       "db_name": "webapp_db",
       "table_names": [
