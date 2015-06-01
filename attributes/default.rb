@@ -25,8 +25,8 @@ default['mysqler']['auto_restart']                    = false #don't change to t
 default['mysqler']['master_user']                     = 'root'
 default['mysqler']['master_user_privileges']          = 'ALL PRIVILEGES'
 #update this attribute to hold your real networks to be used as default for grants
-default['mysqler']['networks']                          =  ['127.0.0.1', 'localhost']
-default['mysqler']['master_user_networks']                          =  ['127.0.0.1', 'localhost']
+default['mysqler']['networks']                        =  ['127.0.0.1', 'localhost']
+default['mysqler']['master_user_networks']            =  ['127.0.0.1', 'localhost']
 
 
 
@@ -45,8 +45,6 @@ if !node['mysqler']['app_name'].to_s.empty?
   default['mysqler']['pidfile']                       = "/var/run/mysqld/mysqld_#{node['mysqler']['app_name']}.pid"
   default['mysqler']['homedir']                       = "/var/lib/mysql/#{node['mysqler']['app_name']}/"
   default['mysqler']['includedir']                    = "#{node['mysqler']['defaults-file-dir']}/#{node['mysqler']['app_name']}_conf.d/"
-  default['mysqler']['service']                       = "mysql_#{node['mysqler']['app_name']}"
-  default['mysqler']['initscript']                    = "/etc/init.d/#{node['mysqler']['service']}"
   
 else
   default['mysqler']['service_name']                  = "mysql"
@@ -55,11 +53,10 @@ else
   default['mysqler']['defaults-file-name']            = "my.cnf"
   default['mysqler']['homedir']                       = "/var/lib/mysql"
   default['mysqler']['includedir']                    = "#{node['mysqler']['defaults-file-dir']}/conf.d/"
-  default['mysqler']['service']                       = "mysql"
-  default['mysqler']['initscript']                    = "/etc/init.d/mysql"
   default['mysqler']['pidfile']                       = "/var/run/mysqld/mysqld.pid"
 end
 
+default['mysqler']['initscript']                    = "/etc/init.d/#{node['mysqler']['service_name']}"
 default['mysqler']['all_grants_file']                 = "#{node['mysqler']['includedir']}/grants.sql"
 default['mysqler']['poke_file']                       = "#{node['mysqler']['includedir']}/poke.sql"
 default['mysqler']['dpkg_cnf']                        = "/etc/dpkg/dpkg.cfg.d/mysql"
