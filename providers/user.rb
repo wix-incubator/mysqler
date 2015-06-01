@@ -59,7 +59,7 @@ end
 
 action :remove do
   @new_resource.networks.each do | source_addr |
-    sql =  "DROP user #{@new_resource.user}'@'#{source_addr}'"
+    sql =  "DROP user '#{@new_resource.user}'@'#{source_addr}'"
     secure_sql = sql
     converge_by(secure_sql) do
       Chef::Log.debug("Running #{secure_sql}")
