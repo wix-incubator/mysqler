@@ -34,14 +34,12 @@ default['mysqler']["mysql_rebuild"]["rebuilddir"]  =  "#{node['mysqler']['homedi
 default['mysqler']["mysql_rebuild"]["server_group_identifier"]  =  node['location']
 default['mysqler']["mysql_rebuild"]["default_server_group_identifier"]  =  'local'
 default['mysqler']["mysql_rebuild"]["dump_rebuild_src"]  = ''
-default['mysqler']["mysql_rebuild"]["ssh_port"]  = 41278
-#default['mysqler']["mysql_rebuild"]["ssh_port"]  = 22
+default['mysqler']["mysql_rebuild"]["ssh_port"]  = 22
 default['mysqler']['mysql_rebuild']['xtra_bkp_src'] = ''
 default['mysqler']['mysql_rebuild']['xtra_bkp_from_version'] = '5.6'
 default['mysqler']["replication"]["username"]         = 'replica'
-#default['mysqler']["replication"]["password"]         = get_pass(node['mysqler']["replication"]["username"])
-#default['mysqler']["replication"]["port"]             = 3306
-default['mysqler']["replication"]["slave-skip-errors"]= "OFF"
+default['mysqler']["replication"]["port"]             = 3306
+
 if node['mysqler']['app_name'].to_s.length>0
   default['mysqler']["mysql_rebuild"]['xtra_bkp_script'] = "#{node['mysqler']["mysql_rebuild"]['script_dir']}/#{node['mysqler']['app_name']}_rebuild_by_xtrabackup.sh"
 else
