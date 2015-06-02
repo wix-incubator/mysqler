@@ -14,7 +14,7 @@ def from_size_to_i(string_size)
     'M' => '*1024*1024', 
     'G' => '*1024*1024*1024' 
   }
-  string_size = string_size.strip
+  string_size = string_size.strip rescue '0'
   size = eval((string_size.split('').map { | c | c= sizes[c] || c }).join())
   size.to_i
 end

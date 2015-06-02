@@ -33,7 +33,7 @@ end
 default['mysqler']["mysql_rebuild"]["rebuilddir"]  =  "#{node['mysqler']['homedir']}/rebuild"
 default['mysqler']["mysql_rebuild"]["server_group_identifier"]  =  node['location']
 default['mysqler']["mysql_rebuild"]["default_server_group_identifier"]  =  'local'
-default['mysqler']["mysql_rebuild"]["dump_rebuild_src"]  = nil 
+default['mysqler']["mysql_rebuild"]["dump_rebuild_src"]  = ''
 default['mysqler']["mysql_rebuild"]["ssh_port"]  = 41278
 #default['mysqler']["mysql_rebuild"]["ssh_port"]  = 22
 default['mysqler']['mysql_rebuild']['xtra_bkp_src'] = ''

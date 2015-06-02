@@ -10,7 +10,6 @@ rebuilding_file="#{node['mysqler']["homedir"]}/rebuilding"
 
 rebuild_from_replica=mysql_rebuild['create_from_replica'] 
 
-
 if rebuild_from_replica
   need_to_rebuild =1
   dump_src=mysql_rebuild['dump_rebuild_src']
