@@ -47,6 +47,14 @@ chmod 777 $rebuild_dir
 log "Started xtrabackup" 
 eval $complete_command > /dev/null
 
+#verify innobackpuex exited successfully
+
+grep 'innobackupex:' $rebuilding_file | tail -1 | grep 'completed OK!'
+if [ $? -ne 0 ]; then
+   log "Xtrabackup failed. Please check the logs to find the failure reason"
+   exit 1
+fi
+
 #verify that the data exists
 dir_size=`du $rebuild_dir | cut -f 1`
 
