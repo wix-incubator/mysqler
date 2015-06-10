@@ -1,5 +1,9 @@
+include_recipe "mysqler::add_repository"
 package "libmysqlclient-dev" do
   action :nothing
+  if node['mysqler'][:packages]['libmysqlclient-dev']['version']
+    version node['mysqler'][:packages]['libmysqlclient-dev']['version']
+  end
 end.run_action(node['mysqler'][:packages]['libmysqlclient-dev'][:action])
 
 chef_gem 'mysql2' do

@@ -3,7 +3,7 @@ class Chef
     class MysqlerChefGem < Chef::Resource::ChefGem
       def initialize(name, run_context=nil)
         super
-        @resource_name = mysqler_chef_gem
+        @resource_name = :mysqler_chef_gem
         @allowed_actions.push(:pristine)
         @provider = Chef::Provider::MysqlerRubygems
       end
