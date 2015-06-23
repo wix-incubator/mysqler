@@ -20,3 +20,9 @@ execute "poke mysql slaves" do
   only_if {node['mysqler']["poke_needed"]}
 end
 
+cron "#{node["mysqler"]["service_name"]} poke" do
+  minute node['mysqler'][:poke][:cron_minute]
+  hour node['mysqler'][:poke][:cron_hour]
+  command "/usr/bin/mysql --defaults-file=#{node['mysqler']['defaults-file']} -u#{node['mysqler'][:poke][:poke_user]} -p#{passwords['users'][node['mysqler'][:poke][:poke_user]]['password']} #{node['mysqler'][:poke][:poke_db]} -e\"replace into #{node['mysqler'][:poke][:poke_table]}  values ('#{node[:fqdn]}',now());\" >/dev/null 2>&1"
+  only_if {node['mysqler']["poke_needed"] && node['mysqler'][:poke][:add_to_cron]}
+end
