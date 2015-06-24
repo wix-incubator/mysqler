@@ -13,7 +13,7 @@ end.run_action(:create)
 
 execute "clean mysql directory" do
   command "rm -fr /var/lib/mysql/mysql /var/lib/mysql/performance_schema /var/lib/mysql/ibdata1 /var/lib/mysql/ib_logfile0 /var/lib/mysql/ib_logfile1"
-  only_if { node['mysqler'][:remove_postinst_mess] and Pathname.new(node['mysqler']['datadir'] +"/a") != Pathname.new('/var/lib/mysql/a') }
+  only_if { node['mysqler'][:remove_postinst_mess] and (node['mysqler']['datadir'] +"/").squeese('/') != '/var/lib/mysql/' }
 end
 
 apt_package node['mysqler'][:mysql_server_package] do
