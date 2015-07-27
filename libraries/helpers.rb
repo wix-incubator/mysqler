@@ -20,9 +20,9 @@ module MysqlerTemplateHelpers
 end
 
 class Erubis::Context
-  include MysqlerTemplateHelpers
+  include MysqlerTemplateHelpers unless Erubis::Context.instance_methods.include?(:db_user)
 end
 
 class Chef::Recipe
-  include MysqlerTemplateHelpers
+  include MysqlerTemplateHelpers unless Chef::Recipe.instance_methods.include?(:db_user)
 end
