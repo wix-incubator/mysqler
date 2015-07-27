@@ -39,26 +39,28 @@ end
 ###### build application specific users from databag
 ## ignore this section if databag does not exists
 
-databag_items = node['mysqler']["users_databag_name"] rescue ""
+databag_name = node['mysqler']["users_databag_name"] rescue nil
 
-if databag_items.is_a? String #Only a singe name provided
-  databag_items = [databag_items]
-end
+databag_items_list = node['mysqler']['users_databag_item'] rescue nil
 
-  databag_items.each do | databag_name |
+if databag_name and databag_items_list
+
+  if databag_items_list.is_a? String
+    databag_items_list = [databag_items_list]
+  end
+
+  databag_items_list.each do |databag_item_name|
     begin
+      db_item = data_bag_item(databag_name, databag_item_name)  rescue {}
 
-    if databag_name.length >0 and node['mysqler']['users_databag_item']
-      db_item = data_bag_item(databag_name, node['mysqler']['users_databag_item'])  rescue {}
-      
-      (db_item['users']||[]).each do | user_id, db_config| 
+      (db_item['users']||[]).each do | user_id, db_config|
         ## support for several privilege groups
-        if db_config.kind_of?(Hash) 
-          db_config = [db_config] 
+        if db_config.kind_of?(Hash)
+          db_config = [db_config]
         end
-        db_config.each do | db_conf | 
+        db_config.each do | db_conf |
           db_name = db_conf["db_name"] || '*'
-      
+
           if db_name != '*'
             mysqler_database db_name do
               defaults_file node['mysqler']["defaults-file"]
@@ -68,17 +70,17 @@ end
               password      master_pass
               action        :create
             end
-          end 
-      
+          end
+
           db_privileges = db_conf['privileges'] || 'USAGE'
           db_tables = db_conf['table_names'] || ['*']
           # create user privileges
           db_privileges.each do | priv , grant|
             user = db_user(user_id,priv)
             pass = db_pass(user_id,priv)
-            mysqler_user user do    
-              defaults_file   node['mysqler']["defaults-file"] 
-              username        node['mysqler']['master_user'] 
+            mysqler_user user do
+              defaults_file   node['mysqler']["defaults-file"]
+              username        node['mysqler']['master_user']
               password        master_pass
               grant           grant
               database        db_name
@@ -87,18 +89,17 @@ end
               user_password   pass
               action          db_conf['action'].to_sym rescue :create
             end
-          end 
-        end 
+          end
+        end
       end
-
-    else
-      Chef::Log.info("Not processing application specific users for #{databag_name}. Check attributes of node['mysqler']['users_databag_name'] or node['mysqler']['users_databag_item']")
-    end
-
     rescue Net::HTTPServerException
-    log "Error building application specific privileges. Data bag not found."
+      log "Error building application specific privileges. Data bag not found."
     end
+
   end
+else
+  Chef::Log.info("Not processing application specific users. Check if node['mysqler']['users_databag_name'] or node['mysqler']['users_databag_item'] not set")
+end
 
 #template based grants are supported to. usually used for drops and not for grants.
 template node['mysqler']["all_grants_file"] do
