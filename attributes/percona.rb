@@ -20,6 +20,6 @@
 #
 
 default["percona"]["skip_passwords"]                            = true
-default["percona"]["apt_keyserver"]                             = "keyserver.ubuntu.com"
+default["percona"]["apt"]["keyserver"]                          = "keyserver.ubuntu.com"
 default["percona"]["backup"]["configure"]                       = false
 
