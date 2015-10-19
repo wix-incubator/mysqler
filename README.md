@@ -35,6 +35,9 @@ We **DO** overwrite several attributes of percona cookbook
  `default["percona"]["apt_keyserver"] = "keyserver.ubuntu.com"`
  
  `default["percona"]["backup"]["configure"] = false`
+ 
+For **Ubuntu** users:
+In case the installation of mysql-server fails - change the mysql_server_remove_default_init_script to false `default['mysqler'][:mysql_server_remove_default_init_script] = false`
 
 ## Usage
 
