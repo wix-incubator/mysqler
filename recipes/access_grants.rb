@@ -72,8 +72,9 @@ if databag_name and databag_items_list
             end
           end
 
-          db_privileges = db_conf['privileges'] || 'USAGE'
+          db_privileges = db_conf['privileges'] || ['USAGE']
           db_tables = db_conf['table_names'] || ['*']
+          db_networks = db_conf['networks'] || node['mysqler']["networks"]
           # create user privileges
           db_privileges.each do | priv , grant|
             user = db_user(user_id,priv)
@@ -85,7 +86,7 @@ if databag_name and databag_items_list
               grant           grant
               database        db_name
               tables          db_tables
-              networks        node['mysqler']["networks"]
+              networks        db_networks
               user_password   pass
               action          db_conf['action'].to_sym rescue :create
             end
