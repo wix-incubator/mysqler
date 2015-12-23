@@ -15,6 +15,14 @@ mysqler_user node['mysqler']['master_user'] do
   user_password   master_pass
   with_grant      true
   ignore_failure  true
+  action          :nothing
+end
+
+execute "check_master_user_login" do
+  command "echo ' Testing #{node['mysqler']['master_user']} connection...'"
+  sensitive true
+  notifies :create, resources(:mysqler_user => "#{node['mysqler']['master_user']}"), :immediately
+  only_if "echo 'select 1;' |  mysql --defaults-file=#{node['mysqler']["defaults-file"]} -s -u#{node['mysqler']['master_user']} > /dev/null 2>&1"
 end
 
 passwords["users"].each_pair do |user,values|

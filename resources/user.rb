@@ -1,4 +1,4 @@
-actions :create, :revoke, :remove
+actions :create, :revoke, :remove, :nothing
 default_action :create
 
 attribute :user, kind_of: String, name_attribute: true
