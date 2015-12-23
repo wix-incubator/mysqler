@@ -32,7 +32,18 @@ action :create do
       end
       converge_by(secure_sql) do
         Chef::Log.debug("Running #{secure_sql}")
-        results = conn.query(sql)    
+        begin 
+          results = conn.query(sql)    
+        rescue Mysql2::Error =>  err 
+          Chef::Log.debug( "Mysql CREATE action on user: '#{@new_resource.user}'@'#{source_addr}' error #{err.message}. Probably after first time creation")
+          Chef::Log.debug( "Validating '#{@new_resource.user}'@'#{source_addr}' creation with default password...")
+          new_conn = Mysql2::Client.new(
+            :default_file => @new_resource.defaults_file ,
+            :username => @new_resource.username,
+            :password => @new_resource.user_password
+          )
+          results = new_conn.query("SELECT USER()")
+        end
         new_resource.updated_by_last_action(true)
       end
     end
