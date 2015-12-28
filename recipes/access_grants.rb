@@ -40,6 +40,9 @@ passwords["users"].each_pair do |user,values|
         tables          ["*"]
         networks        values['networks'] || node['mysqler']["networks"]
         user_password   values['password']
+        if grant['revoke'] # Default: create
+           action  :revoke 
+        end
       end
   end
 end
