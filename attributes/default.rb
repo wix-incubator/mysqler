@@ -45,7 +45,7 @@ if !node['mysqler']['app_name'].to_s.empty?
   default['mysqler']['pidfile']                       = "/var/run/mysqld/mysqld_#{node['mysqler']['app_name']}.pid"
   default['mysqler']['homedir']                       = "/var/lib/mysql/#{node['mysqler']['app_name']}/"
   default['mysqler']['includedir']                    = "#{node['mysqler']['defaults-file-dir']}/#{node['mysqler']['app_name']}_conf.d/"
-  
+  default['mysqler']['mysql-systemd-start']            = "/usr/share/mysql/mysql-systemd-start-#{node['mysqler']['app_name']}"
 else
   default['mysqler']['service_name']                  = "mysql"
   default['mysqler']['socket']                        = "/var/run/mysqld/mysqld.sock"
@@ -54,6 +54,7 @@ else
   default['mysqler']['homedir']                       = "/var/lib/mysql"
   default['mysqler']['includedir']                    = "#{node['mysqler']['defaults-file-dir']}/conf.d/"
   default['mysqler']['pidfile']                       = "/var/run/mysqld/mysqld.pid"
+  default['mysqler']['mysql-systemd-start']            = "/usr/share/mysql/mysql-systemd-start"
 end
 
 default['mysqler']['initscript']                    = "/etc/init.d/#{node['mysqler']['service_name']}"

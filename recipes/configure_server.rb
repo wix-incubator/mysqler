@@ -1,3 +1,4 @@
+include_recipe 'mysqler::systemd'
 app_name = node['mysqler']["app_name"]
 service_name = node['mysqler']['service_name']
 raise "App_name is not set for mysql server configuration"  if (app_name.nil? && node['mysqler']["force_appname"])

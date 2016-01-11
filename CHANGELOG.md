@@ -11,6 +11,10 @@ This file is used to list changes made in each version of the wix-cloud cookbook
 -----
 - [tatyanak] - Add support for different networks for each application with fallback to default
 
+1.0.11
+-----
+- [tatyanak] - Add support for systemd config with the recipes for systemd. 
+
 - - -
 Check the [Markdown Syntax Guide](http://daringfireball.net/projects/markdown/syntax) for help with Markdown.
 
