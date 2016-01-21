@@ -15,8 +15,8 @@ remote_host='<%= @dumped_host %>'
 remote_password='<%= @dumped_password %>'
 remote_user='<%= @dumped_user %>'
 remote_ssh="ssh $remote_user@$remote_host -i ~${remote_user}/.ssh/id_rsa -p<%= node['mysqler']["mysql_rebuild"]["ssh_port"] %> -o StrictHostKeyChecking=no"
-innobackupex="nice -n 19 ionice -c 3 -t innobackupex $defaults_file --password=$remote_password --no-lock --safe-slave-backup --slave-info --stream=xbstream --tmpdir=/tmp . "
-innobackupes_apply_log="innobackupex ${defaults_file} --password=$pass --apply-log $rebuild_dir"
+innobackupex="nice -n 19 ionice -c 3 -t innobackupex $defaults_file --user=$remote_user --password=$remote_password --no-lock --safe-slave-backup --slave-info --stream=xbstream --tmpdir=/tmp . "
+innobackupes_apply_log="innobackupex ${defaults_file} --user=$remote_user --password=$pass --apply-log $rebuild_dir"
 remote_command="$innobackupex| gzip "
 #transfer_command="ssh ${remote_user}@<%= node['fqdn'] %> -p<%= node['mysqler']["mysql_rebuild"]["ssh_port"] %> -o StrictHostKeyChecking=no \"gunzip - | $xbstream\""
 complete_command="$remote_ssh \"$remote_command \" | gunzip - | $xbstream"
