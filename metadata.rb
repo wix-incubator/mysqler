@@ -4,7 +4,7 @@ maintainer_email  'tata@wix.com'
 license           'Apache 2.0'
 description       'Installs and configures MySQL client and server'
 long_description  IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version           '1.0.12'
+version           '1.0.13'
 
 dependencies = %w(
   apt
