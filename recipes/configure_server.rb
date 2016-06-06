@@ -85,7 +85,7 @@ end
 
 # install db to the data directory
 execute "setup new mysql" do
-  command "mysql_install_db --user=#{user} --defaults-file=#{defaults_file} "
+  command "mysql_install_db --defaults-file=#{defaults_file} --user=#{user} "
   not_if "test -f #{node['mysqler']['datadir']}/mysql/user.frm"
 end
 
